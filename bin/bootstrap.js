@@ -78,10 +78,19 @@ CasperError.prototype = Object.getPrototypeOf(new Error());
 (function(global, phantom){
     /*jshint maxstatements:99*/
     "use strict";
-    // phantom args
-    // NOTE: we can't use require('system').args here for some very obscure reason
-    //       do not even attempt at using it as it creates infinite recursion
-    var phantomArgs = phantom.args;
+
+    var phantomArgs, systemArgs;
+    if (phantom.version.major === 2) {
+        //see: https://groups.google.com/forum/#!topic/casperjs/_Rw7Rm6CRIQ
+        var system = require('system');
+        systemArgs = system.args;
+        systemArgs.shift();
+        phantom.args = phantomArgs = systemArgs;
+    } else {
+        // NOTE: we can't use require('system').args here for some very obscure reason
+        //       do not even attempt at using it as it creates infinite recursion
+        phantomArgs = phantom.args;
+    }
 
     if (phantom.casperLoaded) {
         return;

@@ -1963,7 +1963,7 @@ TestCaseResult.prototype.addSkip = function addSkip(skipped, time) {
  * @param Object  warning
  */
 TestCaseResult.prototype.addWarning = function addWarning(warning) {
-    "use strict";
+    // "use strict"; // In strict mode, 'warning' is read-only and cannot be modified.
     warning.suite = this.name;
     this.warnings.push(warning);
 };
